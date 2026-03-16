@@ -12,18 +12,21 @@ export const PortalCards = () => {
       description: 'Process sales, handle returns, and manage daily transactions directly from the POS interface.',
       icon: <Calculator className="w-6 h-6 text-blue-600" />,
       color: 'bg-blue-50',
+      loginPath: ROUTE_PATHS.LOGIN_CASHIER,
     },
     {
       title: 'Manager Portal',
       description: 'Track inventory, analyze sales trends, and monitor employee performance in real-time.',
       icon: <Users className="w-6 h-6 text-indigo-600" />,
       color: 'bg-indigo-50',
+      loginPath: ROUTE_PATHS.LOGIN_MANAGER,
     },
     {
       title: 'Administration',
       description: 'Configure store settings, manage roles, and execute full system oversight.',
       icon: <Settings className="w-6 h-6 text-slate-600" />,
       color: 'bg-slate-100',
+      loginPath: ROUTE_PATHS.LOGIN_ADMIN,
     }
   ];
 
@@ -40,7 +43,7 @@ export const PortalCards = () => {
             <div 
               key={portal.title}
               className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col h-full"
-              onClick={() => navigate(ROUTE_PATHS.LOGIN)}
+              onClick={() => navigate(portal.loginPath)}
             >
               <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-6 ${portal.color}`}>
                 {portal.icon}

@@ -59,12 +59,12 @@ export default function Settings() {
   const [businessSettings, setBusinessSettings] = useState<BusinessSettings>({
     businessName: 'POS & Inventory System',
     email: 'business@pos.com',
-    phone: '+1 (555) 123-4567',
+    phone: '+91 98765 43210',
     address: '123 Business Street',
-    city: 'New York',
-    country: 'United States',
-    currency: 'USD',
-    timezone: 'America/New_York',
+    city: 'Mumbai',
+    country: 'India',
+    currency: 'INR',
+    timezone: 'Asia/Kolkata',
   });
 
   const [preferences, setPreferences] = useState<UserPreferences>({

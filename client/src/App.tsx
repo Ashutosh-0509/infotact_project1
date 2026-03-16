@@ -6,6 +6,9 @@ import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { ROUTE_PATHS } from "@/lib/index";
 import Login from "@/pages/Login";
+import CashierLogin from "@/pages/login/CashierLogin";
+import ManagerLogin from "@/pages/login/ManagerLogin";
+import AdminLogin from "@/pages/login/AdminLogin";
 import Dashboard from "@/pages/Dashboard";
 import Products from "@/pages/Products";
 import Inventory from "@/pages/Inventory";
@@ -84,6 +87,36 @@ const AppRoutes = () => {
             <Navigate to={ROUTE_PATHS.DASHBOARD} replace />
           ) : (
             <Login />
+          )
+        }
+      />
+      <Route
+        path={ROUTE_PATHS.LOGIN_CASHIER}
+        element={
+          isAuthenticated ? (
+            <Navigate to={ROUTE_PATHS.DASHBOARD} replace />
+          ) : (
+            <CashierLogin />
+          )
+        }
+      />
+      <Route
+        path={ROUTE_PATHS.LOGIN_MANAGER}
+        element={
+          isAuthenticated ? (
+            <Navigate to={ROUTE_PATHS.DASHBOARD} replace />
+          ) : (
+            <ManagerLogin />
+          )
+        }
+      />
+      <Route
+        path={ROUTE_PATHS.LOGIN_ADMIN}
+        element={
+          isAuthenticated ? (
+            <Navigate to={ROUTE_PATHS.DASHBOARD} replace />
+          ) : (
+            <AdminLogin />
           )
         }
       />

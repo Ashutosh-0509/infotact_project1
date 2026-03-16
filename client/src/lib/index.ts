@@ -1,6 +1,9 @@
 export const ROUTE_PATHS = {
   HOME: '/',
   LOGIN: '/login',
+  LOGIN_CASHIER: '/login/cashier',
+  LOGIN_MANAGER: '/login/manager',
+  LOGIN_ADMIN: '/login/admin',
   DASHBOARD: '/dashboard',
   PRODUCTS: '/products',
   INVENTORY: '/inventory',
@@ -13,7 +16,7 @@ export const ROUTE_PATHS = {
   SETTINGS: '/settings',
 } as const;
 
-export type UserRole = 'Admin' | 'Manager' | 'Staff';
+export type UserRole = 'Admin' | 'Manager' | 'Staff' | 'Cashier';
 
 export interface User {
   id: string;
@@ -157,8 +160,8 @@ export interface StockAdjustment {
   createdAt: Date;
 }
 
-export const formatCurrency = (amount: number, currency: string = 'USD'): string => {
-  return new Intl.NumberFormat('en-US', {
+export const formatCurrency = (amount: number, currency: string = 'INR'): string => {
+  return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency,
     minimumFractionDigits: 2,

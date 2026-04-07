@@ -14,6 +14,17 @@ const userSchema = new mongoose.Schema({
       'Please add a valid email',
     ],
   },
+  passwordHash: {
+    type: String,
+    required: [true, 'Please add a password'],
+  },
+  role: {
+    type: String,
+    required: [true, 'Please add a role'],
+  },
+  avatar: {
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

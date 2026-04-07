@@ -1,5 +1,3 @@
-
-
 services:
   client:
     build: ./client
@@ -13,8 +11,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - MONGO_URI=ENTER YOURS
-    depends_on:
+      - MONGO_URI=mongodb+srv://Spotify:spotify212@cluster0.gpnmr0x.mongodb.net/Retail
       - mongo
 
   mongo:
@@ -26,4 +23,5 @@ services:
 
 volumes:
   mongo-data:
-  
+
+

@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { users } = require('../data/users');
+const User = require('../models/User');
 
 const router = express.Router();
 
@@ -16,9 +16,7 @@ router.post('/signup', async (req, res) => {
     }
 
     // --- Check if user exists ---
-    const existingUser = users.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase()
-    );
+    const existingUser = await User.findOne({ email: { $regex: new RegExp(`^${email}$`, 'i') } });
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists.' });
     }
@@ -28,21 +26,21 @@ router.post('/signup', async (req, res) => {
     const passwordHash = await bcrypt.hash(password, salt);
 
     // --- Create user ---
-    const newUser = {
-      id: Math.random().toString(36).substring(7),
+    const avatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=${name.split(' ').join('')}`;
+    const newUser = new User({
       name,
       email,
-      passwordHash, // storing the hashed password securely
+      passwordHash,
       role,
-      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${name.split(' ').join('')}`,
-      createdAt: new Date().toISOString()
-    };
+      avatar,
+      createdAt: new Date()
+    });
 
-    users.push(newUser);
+    await newUser.save();
 
     // --- Sign JWT ---
     const payload = {
-      id: newUser.id,
+      id: newUser._id.toString(),
       email: newUser.email,
       role: newUser.role,
       name: newUser.name,
@@ -56,7 +54,7 @@ router.post('/signup', async (req, res) => {
     return res.status(201).json({
       token,
       user: {
-        id: newUser.id,
+        id: newUser._id.toString(),
         name: newUser.name,
         email: newUser.email,
         role: newUser.role,
@@ -81,9 +79,7 @@ router.post('/login', async (req, res) => {
     }
 
     // --- Find user ---
-    const user = users.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase()
-    );
+    const user = await User.findOne({ email: { $regex: new RegExp(`^${email}$`, 'i') } });
 
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password.' });
@@ -102,7 +98,7 @@ router.post('/login', async (req, res) => {
 
     // --- Sign JWT ---
     const payload = {
-      id: user.id,
+      id: user._id.toString(),
       email: user.email,
       role: user.role,
       name: user.name,
@@ -116,7 +112,7 @@ router.post('/login', async (req, res) => {
     return res.status(200).json({
       token,
       user: {
-        id: user.id,
+        id: user._id.toString(),
         name: user.name,
         email: user.email,
         role: user.role,

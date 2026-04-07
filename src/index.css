@@ -1,0 +1,209 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+==========================================================================
+【AI HANDOVER NOTE】
+1. DESIGN PHILOSOPHY:
+   - Ergonomics-First Dashboard: Optimized for high-stress retail environments where staff work long shifts. Every interaction is designed to reduce cognitive load and physical strain.
+   - Neo-minimalism with Functional Density: Clean interfaces that don't sacrifice information density. Critical data is always visible without overwhelming the user.
+   - Bento Modular Surfaces: Card-based layouts create clear visual boundaries between functional areas (inventory, sales, analytics), enabling quick mental mapping.
+   - Speed-Optimized Workflows: POS interface prioritizes transaction velocity with large touch targets, minimal navigation depth, and keyboard shortcuts for power users.
+
+2. TYPOGRAPHY:
+   - Inter (Sans): Selected for exceptional readability at all sizes, from dashboard metrics to dense data tables. Its neutral, professional character suits financial/retail contexts while maintaining warmth. Optimized for screen rendering with clear numerals crucial for pricing and quantities.
+   - JetBrains Mono: Used for SKUs, barcodes, transaction IDs, and financial data. Monospaced design ensures perfect alignment in tables and receipts. Clear distinction between similar characters (0/O, 1/l) prevents costly input errors.
+
+3. COLOR SYSTEM:
+   - Brand Primary (H: 220): Professional blue conveys trust and stability—essential for financial software. Chosen for its calming effect in high-stress retail environments while maintaining authority.
+   - --brand maps to --primary for main CTAs (Complete Sale, Add Product), --accent for secondary actions (Hold Order, Apply Discount), and --ring for focus states ensuring WCAG AAA compliance.
+   - Success (H: 150): Vibrant green for completed transactions and stock confirmations. Slightly blue-shifted for better harmony with primary.
+   - Warning (H: 45): Amber for low stock alerts and pending actions. High visibility without alarm.
+   - Destructive (H: 10): Coral-red for refunds and deletions. Softer than pure red to reduce stress while maintaining urgency.
+   - Chart Colors: Five-color palette spanning cool to warm (blue → teal → green → amber → coral) for sales analytics, inventory categories, and revenue breakdowns. Each color tested for colorblind accessibility.
+
+4. USAGE GUIDE:
+   - Layout: Dashboard uses full-width container with collapsible sidebar (280px expanded, 64px collapsed). POS module uses fixed full-screen layout with persistent cart sidebar (360px) for uninterrupted workflow.
+   - Recommended Effects: Subtle elevation with --card using 1px border + soft shadow (no heavy drop-shadows). Use backdrop-blur sparingly on modals to maintain context. Avoid glassmorphism on data-dense screens.
+   - Interactive States: --ring (2px offset) on all focusable elements for keyboard navigation. Hover states use --accent/10 background. Active states darken by 5% lightness.
+   - Accessibility: Minimum 4.5:1 contrast for body text, 7:1 for critical data (prices, quantities). All interactive elements minimum 44x44px touch target. Support for Windows High Contrast Mode via semantic color tokens.
+   - Dark Mode Strategy: Available but not default. Dark mode uses elevated surfaces (--card lighter than --background) to maintain hierarchy. Reduced saturation prevents eye strain during night shifts.
+==========================================================================
+*/
+
+:root {
+  /* Typography */
+  --font-sans: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: JetBrains Mono, 'Courier New', monospace;
+  
+  /* Radius */
+  --radius: 0.5rem;
+
+  /* Core UI Tokens */
+  --background: oklch(0.99 0.002 220);
+  --foreground: oklch(0.15 0.01 220);
+  --card: oklch(0.98 0.004 220);
+  --card-foreground: oklch(0.15 0.01 220);
+  --popover: oklch(0.99 0.002 220);
+  --popover-foreground: oklch(0.15 0.01 220);
+  --primary: oklch(0.52 0.18 220);
+  --primary-foreground: oklch(0.98 0.004 220);
+  --secondary: oklch(0.94 0.01 220);
+  --secondary-foreground: oklch(0.20 0.01 220);
+  --muted: oklch(0.95 0.008 220);
+  --muted-foreground: oklch(0.48 0.02 220);
+  --accent: oklch(0.92 0.015 220);
+  --accent-foreground: oklch(0.20 0.01 220);
+  --destructive: oklch(0.58 0.20 10);
+  --destructive-foreground: oklch(0.98 0.004 10);
+  --border: oklch(0.88 0.01 220);
+  --input: oklch(0.88 0.01 220);
+  --ring: oklch(0.52 0.18 220);
+  
+  /* Chart Tokens */
+  --chart-1: oklch(0.55 0.18 220);
+  --chart-2: oklch(0.60 0.16 180);
+  --chart-3: oklch(0.65 0.15 150);
+  --chart-4: oklch(0.68 0.14 50);
+  --chart-5: oklch(0.62 0.18 15);
+  
+  /* Sidebar Tokens */
+  --sidebar: oklch(0.97 0.005 220);
+  --sidebar-foreground: oklch(0.20 0.01 220);
+  --sidebar-primary: oklch(0.52 0.18 220);
+  --sidebar-primary-foreground: oklch(0.98 0.004 220);
+  --sidebar-accent: oklch(0.92 0.015 220);
+  --sidebar-accent-foreground: oklch(0.20 0.01 220);
+  --sidebar-border: oklch(0.90 0.008 220);
+  --sidebar-ring: oklch(0.52 0.18 220);
+}
+
+.dark {
+  --background: oklch(0.12 0.015 220);
+  --foreground: oklch(0.92 0.008 220);
+  --card: oklch(0.16 0.018 220);
+  --card-foreground: oklch(0.92 0.008 220);
+  --popover: oklch(0.14 0.016 220);
+  --popover-foreground: oklch(0.92 0.008 220);
+  --primary: oklch(0.62 0.20 220);
+  --primary-foreground: oklch(0.12 0.015 220);
+  --secondary: oklch(0.22 0.025 220);
+  --secondary-foreground: oklch(0.92 0.008 220);
+  --muted: oklch(0.20 0.020 220);
+  --muted-foreground: oklch(0.65 0.015 220);
+  --accent: oklch(0.25 0.028 220);
+  --accent-foreground: oklch(0.92 0.008 220);
+  --destructive: oklch(0.62 0.22 10);
+  --destructive-foreground: oklch(0.95 0.008 10);
+  --border: oklch(0.25 0.025 220);
+  --input: oklch(0.25 0.025 220);
+  --ring: oklch(0.62 0.20 220);
+  
+  /* Chart Tokens */
+  --chart-1: oklch(0.65 0.20 220);
+  --chart-2: oklch(0.68 0.18 180);
+  --chart-3: oklch(0.70 0.17 150);
+  --chart-4: oklch(0.72 0.16 50);
+  --chart-5: oklch(0.68 0.20 15);
+  
+  /* Sidebar Tokens */
+  --sidebar: oklch(0.14 0.016 220);
+  --sidebar-foreground: oklch(0.88 0.008 220);
+  --sidebar-primary: oklch(0.62 0.20 220);
+  --sidebar-primary-foreground: oklch(0.12 0.015 220);
+  --sidebar-accent: oklch(0.25 0.028 220);
+  --sidebar-accent-foreground: oklch(0.92 0.008 220);
+  --sidebar-border: oklch(0.22 0.022 220);
+  --sidebar-ring: oklch(0.62 0.20 220);
+}
+
+@theme inline {
+  /* Shadcn Core Mapping */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Charts Mapping */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Sidebar Mapping */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Typography */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  /* Radius */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply scroll-smooth antialiased;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans min-h-screen;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+
+  code, pre {
+    @apply font-mono;
+  }
+
+  ::selection {
+    @apply bg-primary/20 text-primary;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/20 rounded-full hover:bg-muted-foreground/40;
+  }
+}

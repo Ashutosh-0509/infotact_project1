@@ -1,14 +1,12 @@
 import axios from 'axios';
 
-// Create an instance of axios
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api',
+  baseURL: 'https://infotact-project1-2.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Request interceptor to add the token to headers
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token && config.headers) {
@@ -19,7 +17,6 @@ api.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
-// Response interceptor to handle 401 Unauthorized globally
 api.interceptors.response.use(
   (response) => response,
   (error) => {

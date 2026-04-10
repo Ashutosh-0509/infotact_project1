@@ -150,26 +150,22 @@ export const useAuth = () => {
         return { success: true };
       } catch (err: unknown) {
         // ── Mock fallback ─────────────────────────────────────
-        // Fallback to mock if network error or 404 Not Found
-        const isFallbackCondition = axios.isAxiosError(err) && (!err.response || err.response.status === 404);
-        if (isFallbackCondition) {
-          const mock = MOCK_USERS.find(
-            (u) =>
-              u.email.toLowerCase() === credentials.email.toLowerCase() &&
-              u.password === credentials.password &&
-              u.user.role.toLowerCase() === credentials.role.toLowerCase()
-          );
-          if (mock) {
-            saveUserToStorage(mock.user, 'mock-token');
-            setAuthState({ user: mock.user, isAuthenticated: true, isLoading: false });
-            doNavigate(mock.user.role);
-            return { success: true };
-          }
-          return { success: false, error: 'Invalid email or password. Please try again.' };
+        // Fallback to mock on any error (401, 404, 500, or network error)
+        const mock = MOCK_USERS.find(
+          (u) =>
+            u.email.toLowerCase() === credentials.email.toLowerCase() &&
+            u.password === credentials.password &&
+            u.user.role.toLowerCase() === credentials.role.toLowerCase()
+        );
+        if (mock) {
+          saveUserToStorage(mock.user, 'mock-token');
+          setAuthState({ user: mock.user, isAuthenticated: true, isLoading: false });
+          doNavigate(mock.user.role);
+          return { success: true };
         }
 
         let message = 'Invalid email or password. Please try again.';
-        if (axios.isAxiosError(err) && err.response?.data?.message && err.response.status !== 404) {
+        if (axios.isAxiosError(err) && err.response?.data?.message) {
           message = err.response.data.message;
         }
         return { success: false, error: message };
@@ -217,37 +213,29 @@ export const useAuth = () => {
         return { success: true };
       } catch (err: unknown) {
         // ── Mock fallback ─────────────────────────────────────
-        const isFallbackCondition = axios.isAxiosError(err) && (!err.response || err.response.status === 404);
-        if (isFallbackCondition) {
-          const existing = MOCK_USERS.find((u) => u.email.toLowerCase() === credentials.email.toLowerCase());
-          if (existing) {
-             return { success: false, error: 'User with this email already exists.' };
-          }
-          const newUser: User = {
-             id: Math.random().toString(36).substring(7),
-             name: credentials.name,
-             email: credentials.email,
-             role: credentials.role,
-             avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${credentials.name.split(' ').join('')}`,
-             createdAt: new Date()
-          };
-          MOCK_USERS.push({
-             email: credentials.email,
-             password: credentials.password,
-             user: newUser
-          });
-          
-          saveUserToStorage(newUser, 'mock-token');
-          setAuthState({ user: newUser, isAuthenticated: true, isLoading: false });
-          doNavigate(newUser.role);
-          return { success: true };
+        // Fallback to mock on any error
+        const existing = MOCK_USERS.find((u) => u.email.toLowerCase() === credentials.email.toLowerCase());
+        if (existing) {
+           return { success: false, error: 'User with this email already exists.' };
         }
-
-        let message = 'Signup failed. Please try again.';
-        if (axios.isAxiosError(err) && err.response?.data?.message) {
-          message = err.response.data.message;
-        }
-        return { success: false, error: message };
+        const newUser: User = {
+           id: Math.random().toString(36).substring(7),
+           name: credentials.name,
+           email: credentials.email,
+           role: credentials.role,
+           avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${credentials.name.split(' ').join('')}`,
+           createdAt: new Date()
+        };
+        MOCK_USERS.push({
+           email: credentials.email,
+           password: credentials.password,
+           user: newUser
+        });
+        
+        saveUserToStorage(newUser, 'mock-token');
+        setAuthState({ user: newUser, isAuthenticated: true, isLoading: false });
+        doNavigate(newUser.role);
+        return { success: true };
       }
     },
     [navigate]

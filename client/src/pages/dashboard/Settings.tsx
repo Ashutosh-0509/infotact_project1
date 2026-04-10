@@ -57,11 +57,11 @@ export default function Settings() {
             <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-1">Store Name</label>
-                <Input defaultValue="NEXUS RETAIL HUB" className="bg-black/20 border-primary/10 rounded-xl h-12 font-bold" />
+                <Input defaultValue="RETAIL PRO HUB" className="bg-black/20 border-primary/10 rounded-xl h-12 font-bold" />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-1">Email Address</label>
-                <Input defaultValue="contact@nexuspos.io" className="bg-black/20 border-primary/10 rounded-xl h-12 font-bold" />
+                <Input defaultValue="contact@retailpro.io" className="bg-black/20 border-primary/10 rounded-xl h-12 font-bold" />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-1">GST Number</label>
@@ -74,7 +74,7 @@ export default function Settings() {
               <div className="md:col-span-2 space-y-2">
                 <label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-1">Store Address</label>
                 <Textarea 
-                  defaultValue="123, Nexus Tower, BKC, Mumbai - 400051" 
+                  defaultValue="123, Retail Pro Tower, BKC, Mumbai - 400051" 
                   className="bg-black/20 border-primary/10 rounded-2xl min-h-[100px] font-medium resize-none" 
                 />
               </div>

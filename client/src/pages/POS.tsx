@@ -138,7 +138,8 @@ export default function POS() {
   }, [paymentMethod, amountReceived, cartTotal.total]);
 
   return (
-    <Layout>
+    <div className="theme-neon-blue">
+      <Layout>
       <div className="h-[calc(100vh-4rem)] flex gap-4 p-4 overflow-hidden">
         <div className="flex-1 flex flex-col gap-4 overflow-hidden">
           <Card className="p-4">
@@ -159,10 +160,10 @@ export default function POS() {
               <Button
                 variant="outline"
                 size="lg"
-                className="gap-2"
+                className="gap-2 border-primary/20 hover:border-primary/50 hover:bg-primary/5 neon-blue-glow transition-all duration-300"
                 onClick={() => setShowCustomerDialog(true)}
               >
-                <User className="h-5 w-5" />
+                <User className="h-5 w-5 text-primary" />
                 {selectedCustomer ? selectedCustomer.name : 'Customer'}
               </Button>
             </div>
@@ -339,10 +340,11 @@ export default function POS() {
 
                 <Button
                   size="lg"
-                  className="w-full"
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-black rounded-2xl h-16 shadow-[0_10px_30px_rgba(var(--primary),0.3)] gap-2 mt-4 uppercase tracking-tighter neon-blue-glow"
                   onClick={handleCheckout}
                 >
-                  Checkout
+                  <ShoppingCart className="h-5 w-5" />
+                  PROCEED TO CHECKOUT
                 </Button>
               </div>
             )}
@@ -483,6 +485,7 @@ export default function POS() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </Layout>
+      </Layout>
+    </div>
   );
 }

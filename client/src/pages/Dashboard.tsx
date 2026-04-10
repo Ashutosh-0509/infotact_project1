@@ -32,6 +32,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { toast } from 'sonner';
 
 export default function Dashboard() {
@@ -103,8 +104,9 @@ export default function Dashboard() {
   };
 
   return (
-    <Layout>
-      <div className="space-y-10 pb-10">
+    <div className="theme-neon-blue">
+      <Layout>
+        <div className="space-y-10 pb-10">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-black tracking-tighter text-foreground uppercase border-l-4 border-primary pl-4">DASHBOARD</h1>
@@ -371,5 +373,6 @@ export default function Dashboard() {
         )}
       </AnimatePresence>
     </Layout>
+    </div>
   );
 }

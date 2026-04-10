@@ -23,6 +23,7 @@ export const ROUTE_PATHS = {
   EMPLOYEES: '/employees',
   REPORTS: '/reports',
   SETTINGS: '/settings',
+  AI_PREDICTIONS: '/ai-predictions',
 } as const;
 
 export type UserRole = 'Admin' | 'Manager' | 'Staff' | 'Cashier';

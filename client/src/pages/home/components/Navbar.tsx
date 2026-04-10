@@ -56,7 +56,7 @@ export const Navbar = () => {
               <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-2 rounded-xl shadow-lg shadow-blue-500/30 group-hover:shadow-blue-500/50 transition-all">
                 <ShoppingCart className="h-5 w-5 text-white" />
               </div>
-              <span className={`text-xl font-extrabold tracking-tight transition-colors ${scrolled ? 'text-slate-900' : 'text-white'}`}>POS Pro</span>
+              <span className={`text-xl font-extrabold tracking-tight transition-colors ${scrolled ? 'text-slate-900' : 'text-white'}`}>Retail Pro</span>
             </div>
 
             {/* Navigation Links */}

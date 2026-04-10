@@ -29,6 +29,7 @@ import CashierDashboard from "@/pages/dashboard/CashierDashboard";
 import ManagerDashboard from "@/pages/dashboard/ManagerDashboard";
 import AdminDashboard from "@/pages/dashboard/AdminDashboard";
 import Landing from "@/pages/home/Landing";
+import AIPredictions from "@/pages/AIPredictions";
 
 import { ReactNode, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -82,13 +83,7 @@ const AppRoutes = () => {
     <Routes>
       <Route
         path={ROUTE_PATHS.HOME}
-        element={
-          isAuthenticated ? (
-            <Navigate to={ROUTE_PATHS.DASHBOARD} replace />
-          ) : (
-            <Landing />
-          )
-        }
+        element={<Landing />}
       />
       <Route
         path={ROUTE_PATHS.LOGIN}
@@ -158,11 +153,7 @@ const AppRoutes = () => {
       />
       <Route
         path={ROUTE_PATHS.DASHBOARD_ADMIN}
-        element={
-          <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        }
+        element={<Navigate to={ROUTE_PATHS.DASHBOARD} replace />}
       />
       <Route
         path={ROUTE_PATHS.DASHBOARD}
@@ -241,6 +232,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <Settings />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={ROUTE_PATHS.AI_PREDICTIONS}
+        element={
+          <ProtectedRoute>
+            <AIPredictions />
           </ProtectedRoute>
         }
       />

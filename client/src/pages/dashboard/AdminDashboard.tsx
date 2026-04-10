@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import SidebarLayout from "@/components/SidebarLayout";
 import { 
   BarChart3, 
@@ -23,12 +24,14 @@ import {
   ShieldCheck,
   Plus,
   Search,
-  Filter
+  Filter,
+  Monitor
 } from "lucide-react";
 import {
   MOCK_EMPLOYEES,
   MOCK_SUPPLIERS
 } from "@/mockData";
+import { ROUTE_PATHS } from "@/lib/index";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -53,6 +56,7 @@ const NAV_ITEMS = [
   { id: "users", label: "Users & Roles", icon: Users },
   { id: "finance", label: "Finance", icon: Wallet },
   { id: "ai", label: "AI Predictions", icon: Brain },
+  { id: "retail-pro", label: "Retail Pro Platform", icon: Monitor },
   { id: "audit", label: "Audit Logs", icon: History },
   { id: "settings", label: "Settings", icon: Settings },
   { id: "export", label: "Export Reports", icon: Download },
@@ -84,7 +88,16 @@ const ADMIN_KPIS = [
 ];
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("analytics");
+
+  useEffect(() => {
+    if (activeTab === "retail-pro") {
+      navigate(ROUTE_PATHS.POS);
+      // Reset tab so if they come back it's not stuck
+      setActiveTab("analytics");
+    }
+  }, [activeTab, navigate]);
   const [liveActivities, setLiveActivities] = useState([
     { id: 1, text: "New order #1089 — ₹2,340 — Rajesh Kumar", time: "2 min ago", icon: ShoppingBag, color: "text-green-600" },
     { id: 2, text: "Low stock: Amul Butter — 3 units left", time: "5 min ago", icon: BadgeAlert, color: "text-amber-600" },

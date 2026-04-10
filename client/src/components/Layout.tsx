@@ -19,6 +19,7 @@ import {
   ChevronDown,
   LogOut,
   User as UserIcon,
+  Bot
 } from 'lucide-react';
 import { ROUTE_PATHS } from '@/lib/index';
 import { useAuth } from '@/hooks/useAuth';
@@ -55,6 +56,7 @@ const navItems: NavItem[] = [
   { path: ROUTE_PATHS.DASHBOARD_INVENTORY, label: 'Inventory', icon: Warehouse },
   { path: ROUTE_PATHS.DASHBOARD_CUSTOMERS, label: 'Customers', icon: Users },
   { path: ROUTE_PATHS.DASHBOARD_REPORTS, label: 'Reports', icon: BarChart3 },
+  { path: ROUTE_PATHS.AI_PREDICTIONS, label: 'AI Predictions', icon: Bot },
   { path: ROUTE_PATHS.DASHBOARD_SETTINGS, label: 'Settings', icon: Settings },
 ];
 
@@ -123,7 +125,7 @@ export default function Layout({ children }: LayoutProps) {
                   <div className="w-8 h-8 rounded-lg bg-primary/20 border border-primary/50 flex items-center justify-center shadow-[0_0_15px_rgba(var(--primary),0.3)]">
                     <ShoppingCart className="w-5 h-5 text-primary" />
                   </div>
-                  <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">NEXUS POS</span>
+                  <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">RETAIL PRO</span>
                 </motion.div>
               ) : (
                 <motion.div
@@ -271,7 +273,7 @@ export default function Layout({ children }: LayoutProps) {
                       </Avatar>
                       <div className="flex flex-col">
                         <span className="text-sm font-bold">{user?.name || "Admin"}</span>
-                        <span className="text-xs text-muted-foreground">{user?.email || "admin@nexus.pos"}</span>
+                        <span className="text-xs text-muted-foreground">{user?.email || "admin@retailpro.io"}</span>
                       </div>
                     </div>
                   </DropdownMenuLabel>

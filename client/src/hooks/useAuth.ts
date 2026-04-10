@@ -121,7 +121,7 @@ export const useAuth = () => {
         } else if (role === 'Manager') {
           navigate(ROUTE_PATHS.DASHBOARD_MANAGER);
         } else if (role === 'Admin') {
-          navigate(ROUTE_PATHS.DASHBOARD_ADMIN);
+          navigate(ROUTE_PATHS.DASHBOARD);
         } else {
           navigate(ROUTE_PATHS.DASHBOARD);
         }
@@ -183,7 +183,7 @@ export const useAuth = () => {
         } else if (role === 'Manager') {
           navigate(ROUTE_PATHS.DASHBOARD_MANAGER);
         } else if (role === 'Admin') {
-          navigate(ROUTE_PATHS.DASHBOARD_ADMIN);
+          navigate(ROUTE_PATHS.DASHBOARD);
         } else {
           navigate(ROUTE_PATHS.DASHBOARD);
         }

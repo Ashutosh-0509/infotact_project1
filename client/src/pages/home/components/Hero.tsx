@@ -86,11 +86,11 @@ export const Hero = () => {
         </motion.div>
 
         {/* Floating 3D Mockup Elements */}
-        <div className="mt-20 relative max-w-5xl mx-auto hidden md:block h-72 lg:h-96 w-full">
+        <div className="mt-20 relative max-w-5xl mx-auto hidden md:block h-72 lg:h-96 w-full overflow-visible">
           <motion.div 
             style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
             initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 5, y: 0, ease:"easeOut" }}
             transition={{ duration: 1, delay: 0.3 }}
             className="absolute left-1/2 -translate-x-1/2 top-0 w-full max-w-4xl aspect-[16/9] shadow-2xl rounded-2xl z-10"
           >

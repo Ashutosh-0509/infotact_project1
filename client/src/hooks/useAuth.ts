@@ -128,7 +128,8 @@ export const useAuth = () => {
       };
 
       try {
-        const { data } = await axios.post(`${BASE_URL}/auth/login`, {
+        const apiUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+        const { data } = await axios.post(`${apiUrl}/api/auth/login`, {
           email: credentials.email,
           password: credentials.password,
           role: credentials.role,
@@ -149,9 +150,9 @@ export const useAuth = () => {
         return { success: true };
       } catch (err: unknown) {
         // ── Mock fallback ─────────────────────────────────────
-        // If server is unreachable (network error / timeout), use mock credentials
-        const isNetworkError = axios.isAxiosError(err) && !err.response;
-        if (isNetworkError) {
+        // Fallback to mock if network error or 404 Not Found
+        const isFallbackCondition = axios.isAxiosError(err) && (!err.response || err.response.status === 404);
+        if (isFallbackCondition) {
           const mock = MOCK_USERS.find(
             (u) =>
               u.email.toLowerCase() === credentials.email.toLowerCase() &&
@@ -164,11 +165,11 @@ export const useAuth = () => {
             doNavigate(mock.user.role);
             return { success: true };
           }
-          return { success: false, error: 'Invalid credentials.' };
+          return { success: false, error: 'Invalid email or password. Please try again.' };
         }
 
-        let message = 'Login failed. Please try again.';
-        if (axios.isAxiosError(err) && err.response?.data?.message) {
+        let message = 'Invalid email or password. Please try again.';
+        if (axios.isAxiosError(err) && err.response?.data?.message && err.response.status !== 404) {
           message = err.response.data.message;
         }
         return { success: false, error: message };
@@ -193,7 +194,8 @@ export const useAuth = () => {
       };
 
       try {
-        const { data } = await axios.post(`${BASE_URL}/auth/signup`, {
+        const apiUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+        const { data } = await axios.post(`${apiUrl}/api/auth/signup`, {
           name: credentials.name,
           email: credentials.email,
           password: credentials.password,
@@ -215,8 +217,8 @@ export const useAuth = () => {
         return { success: true };
       } catch (err: unknown) {
         // ── Mock fallback ─────────────────────────────────────
-        const isNetworkError = axios.isAxiosError(err) && !err.response;
-        if (isNetworkError) {
+        const isFallbackCondition = axios.isAxiosError(err) && (!err.response || err.response.status === 404);
+        if (isFallbackCondition) {
           const existing = MOCK_USERS.find((u) => u.email.toLowerCase() === credentials.email.toLowerCase());
           if (existing) {
              return { success: false, error: 'User with this email already exists.' };

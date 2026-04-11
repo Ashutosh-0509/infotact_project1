@@ -1,6 +1,7 @@
 ##  Omnichannel Retail POS & Inventory Management System
 
 Retail Pro is modern Point of Sale (POS) and retail management system built for scalability and performance. It seamlessly connects daily checkout operations with high-level administrative functions such as multi-store management, attendance tracking, role-based access control (RBAC), and deep financial analytics. The platform features an ultra-responsive, dynamic UI heavily leveraging animations and premium aesthetic patterns.
+
 This is a full-stack POS Inventory Management System built using MERN stack. It supports product management, order processing, and role-based access control for Admin, Manager, and Cashier.
 
 

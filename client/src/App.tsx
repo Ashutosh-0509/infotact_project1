@@ -27,7 +27,14 @@ import Employees from "@/pages/Employees";
 import Reports from "@/pages/Reports";
 import Settings from "@/pages/Settings";
 import CashierDashboard from "@/pages/dashboard/CashierDashboard";
-import ManagerDashboard from "@/pages/dashboard/ManagerDashboard";
+import ManagerLayout from "@/pages/manager/ManagerLayout";
+import ManagerOverview from "@/pages/manager/ManagerOverview";
+import ManagerInventory from "@/pages/manager/ManagerInventory";
+import ManagerSuppliers from "@/pages/manager/ManagerSuppliers";
+import ManagerEmployees from "@/pages/manager/ManagerEmployees";
+import ManagerSales from "@/pages/manager/ManagerSales";
+import ManagerPromotions from "@/pages/manager/ManagerPromotions";
+import ManagerAlerts from "@/pages/manager/ManagerAlerts";
 // import AdminDashboard from "@/pages/dashboard/AdminDashboard";
 import Landing from "@/pages/home/Landing";
 import AIPredictions from "@/pages/AIPredictions";
@@ -67,7 +74,7 @@ const ProtectedRoute = ({ children, allowedRole }: ProtectedRouteProps) => {
     if (normalizedRole === 'cashier' || normalizedRole === 'staff') 
       return <Navigate to="/dashboard/pos" replace />;
     if (normalizedRole === 'manager') 
-      return <Navigate to="/dashboard/manager" replace />;
+      return <Navigate to="/manager" replace />;
     if (normalizedRole === 'admin') 
       return <Navigate to="/dashboard" replace />;
     return <Navigate to="/" replace />;
@@ -95,26 +102,19 @@ const AppRoutes = () => {
       } />
       
       {/* Protected Routes - Manager */}
-      <Route path="/dashboard/manager" element={
+      <Route path="/manager" element={
         <ProtectedRoute allowedRole="manager">
-          <ManagerDashboard />
+          <ManagerLayout />
         </ProtectedRoute>
-      } />
-      <Route path="/dashboard/manager/inventory" element={
-        <ProtectedRoute allowedRole="manager">
-          <ManagerDashboard page="inventory" />
-        </ProtectedRoute>
-      } />
-      <Route path="/dashboard/manager/employees" element={
-        <ProtectedRoute allowedRole="manager">
-          <ManagerDashboard page="employees" />
-        </ProtectedRoute>
-      } />
-      <Route path="/dashboard/manager/reports" element={
-        <ProtectedRoute allowedRole="manager">
-          <ManagerDashboard page="reports" />
-        </ProtectedRoute>
-      } />
+      }>
+        <Route index element={<ManagerOverview />} />
+        <Route path="inventory" element={<ManagerInventory />} />
+        <Route path="suppliers" element={<ManagerSuppliers />} />
+        <Route path="employees" element={<ManagerEmployees />} />
+        <Route path="sales" element={<ManagerSales />} />
+        <Route path="promotions" element={<ManagerPromotions />} />
+        <Route path="alerts" element={<ManagerAlerts />} />
+      </Route>
       
       {/* Protected Routes - Admin (NEXUS) */}
       <Route path="/dashboard" element={

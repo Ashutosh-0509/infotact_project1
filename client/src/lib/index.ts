@@ -12,7 +12,7 @@ export const ROUTE_PATHS = {
   DASHBOARD_REPORTS: '/dashboard/reports',
   DASHBOARD_SETTINGS: '/dashboard/settings',
   DASHBOARD_POS: '/dashboard/pos',
-  DASHBOARD_MANAGER: '/dashboard/manager',
+  DASHBOARD_MANAGER: '/manager',
   DASHBOARD_ADMIN: '/dashboard/admin',
   DASHBOARD_USERS: '/dashboard/users',
   PRODUCTS: '/products',

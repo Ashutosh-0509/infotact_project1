@@ -10,6 +10,7 @@ This is a full-stack POS Inventory Management System built using MERN stack. It 
       Frontend: React.js, Tailwind CSS
       Backend: Node.js, Express.js
       Database: MongoDB
+      DevOps Tool: Docker
       Cache: Redis
       Auth: JWT + bcrypt
       

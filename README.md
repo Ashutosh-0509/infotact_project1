@@ -1,90 +1,61 @@
-<<<<<<< HEAD
-# 技术栈
+##  Omnichannel Retail POS & Inventory Management System
 
-该项目使用以下技术栈
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Retail Pro is modern Point of Sale (POS) and retail management system built for scalability and performance. It seamlessly connects daily checkout operations with high-level administrative functions such as multi-store management, attendance tracking, role-based access control (RBAC), and deep financial analytics. The platform features an ultra-responsive, dynamic UI heavily leveraging animations and premium aesthetic patterns.
+
+This is a full-stack POS Inventory Management System built using MERN stack. It supports product management, order processing, and role-based access control for Admin, Manager, and Cashier.
 
 
-# 开发流程
+### 1. System Architecture & Technology Stack
+      
+      Frontend: React.js, Tailwind CSS
+      Backend: Node.js, Express.js
+      Database: MongoDB
+      DevOps Tool: Docker
+      Cache: Redis
+      Auth: JWT + bcrypt
+      
+### Frontend (Client)
+- **Frameworks & Core**: React 18 with TypeScript running on Vite for lightning-fast Hot Module Replacement (HMR).
+- **Routing**: `react-router-dom` implemented for declarative, client-side, dynamic routing protected by an Auth state layer.
+- **Styling**: Tailwind CSS v3 utilized for utility-first styling, providing instant custom configurations, typography processing, and layout generation.
+- **UI Architecture**: Deeply integrated with Shadcn UI (Radix UI primitives). This ensures absolute maximum accessibility while delivering beautifully animated layouts.
+- **Animations**: `framer-motion` tracks micro-interactions (e.g., spring-based drawer collapsing, modal fading, page transitions).
+- **Charting**: `recharts` leveraged for SVG-based reactive data visualizations (Area charts for sales, Doughnut charts for categorization).
+- **Notifications**: `sonner` is utilized for non-blocking, stackable toast notifications across the UI.
 
-1. 参考用户需求，调整 src/index.css 与 tailwind.config.ts 的主题风格
-2. 根据用户需求，划分出所需要实现的页面
-3. 整理好每个页面需要实现的功能，在 pages 下创建对应的文件夹及其下入口 Index.tsx
-4. 在 App.tsx 中创建路由配置，引入刚才的各个入口文件 Index.tsx
-5. 根据刚才整理的需求，如果需求简单，可以直接在 Index.tsx 中完成该页面的全部工作
-6. 如果需求复杂，可以将 page 拆分为若干个组件来实现，目录结构如下：
-    - Index.tsx 入口
-    - /components/ 组件
-    - /hooks/ 钩子
-    - /stores/ 如果有复杂交互通信时，可以使用 zustand 进行通信
-7. 在完成需求后，需要进行 pnpm i 安装依赖，并使用 npm run lint & npx tsc --noEmit -p tsconfig.app.json --strict 进行检查，并修复问题
+### Backend (Server - REST API)
+- **Framework**: Node.js + Express.js backend.
+- **Database Architecture**: MongoDB hosted via MongoDB Atlas (Cloud) / Local environments, modeled utilizing `Mongoose` schema validations.
+- **Authentication**: JWT (JSON Web Tokens) generated upon login and passed via Bearer auth headers for stateful API route protection.
+- **File Containerization**: Environment structured entirely utilizing Docker & `docker-compose.yaml`.
 
-# 接入后端接口
-- 当需要新增接口或者操作 supabase 时，需要先在 src/api 新增对应 api 文件，并导出对应的数据类型，可以参考 src/demo.ts 文件，如果是 supabase 还需要做好实现
-- 前端与 supabase 做实现时，都需要完全按照数据类型进行实现，尽可能避免修改定好的数据类型，如果出现修改，需要检查所有引用该类型的文件
-=======
-# RETAIL PRO - POS Inventory System
+---
 
-Retail Pro is a comprehensive, modern Point of Sale (POS) and Inventory Management System designed to streamline retail operations. It features a stunning, intuitive UI built with React, Vite, Tailwind CSS, and Shadcn UI.
+## 2. Setup & Installation Guide
 
-## 🚀 Key Features
+This system supports both native bare-metal execution and isolated Docker containerization.
 
-### 👤 Role-Based Access Control
-- Secure login portal with role-based routing.
-- Three dedicated portals: **Admin**, **Manager**, and **Cashier**, ensuring appropriate access to sensitive data.
+### 2.1 Using Docker (Recommended for Production)
+Ensure Docker Desktop is installed.
+1. Configure your `.env` connection string in the `server` directory (or map it within `docker-compose.yaml`).
+2. Navigate to the root directory and run:
+   ```bash
+   docker-compose up --build
+   ```
+3. The platform will automatically provision a Node environment, install all dependencies, build the Vite app, and map port `8080` to the frontend and `5000` to the backend.
 
-### 💼 Manager Portal
-- **Overview Dashboard:** Provides a top-level view of Total Products, Low Stock Items, Sales, and Pending Orders.
-- **Inventory Management:** Detailed product table with tracking, categorization, search, and low-stock visual indicators.
-- **Low Stock Alerts:** 
-  - Tracks items running below minimum required stock (e.g., Critical, Low).
-  - Displays Total Deficit cost required to restock.
-  - One-click "Create PO" button for instant supplier orders.
-- **Employee Management:** Attendance tracking system with check-in/out logs and active status indicators.
+### 2.2 Using Terminal (Development Mode)
+Great for live editing the code.
 
-### 🛒 Cashier POS Portal (Point of Sale)
-- **Visual Product Grid:** Relatable, High-Quality Product Photography powered by Unsplash with dynamic category-based fallbacks.
-- **Smart Cart System:** Add, remove, and adjust quantities on the fly with real-time Subtotal, GST, and Total calculations.
-- **Advanced Checkout Modal:**
-  - Multiple payment types supported: **CASH, CARD, UPI, SPLIT**.
-  - **Cash:** Built-in change calculator allowing cashiers to input received amount and view exact change to return.
-  - **Card:** Mock interface for processing card details.
-  - **UPI:** Dynamic QR code setup and UPI ID display.
-  - Split Payments: Allow customers to pay partially via Cash and UPI/Card.
-- **Digital Receipt Generation:** Beautiful, printable digital receipts generated immediately after payment confirmation.
+**For the Backend:**
+1. `cd server`
+2. `npm install`
+3. Check `server/.env` and ensure `MONGO_URI` is set (e.g., `MONGO_URI="mongodb://127.0.0.1:27017/pos_system"` or your Atlas URI).
+4. `npm run dev` (starts the Nodemon server on `http://localhost:5000`).
 
-## 📸 Screenshots & UI Previews
-*The Cashier POS Portal showing the updated realistic product grid:*
-![Cashier POS Interface](./client/public/products/pos-preview.png)
+**For the Frontend:**
+1. `cd client`
+2. `npm install`
+3. `npm run dev` (starts the Vite frontend server on `http://localhost:8080`).
 
-*(Note: Replace the image above with your actual screenshot file)*
-
-## 🎨 UI / UX
-- Premium aesthetic utilizing modern design paradigms (Glassmorphism, subtle micro-animations).
-- Dark/Light mode thematic awareness.
-- Fully responsive across desktop environments.
-
-## 📁 Project Structure
-
-This project is split into a frontend and a backend:
-- `/client`: Frontend Application (Vite + React + Tailwind + Shadcn/UI + Framer Motion)
-- `/server`: Backend Service (Node/Express Placeholder)
-
-## 🛠️ Getting Started
-
-To run the application locally:
-
-### 1. Start the Frontend
-```bash
-cd client
-npm install
-npm run dev
-```
-
-### 2. Access the Portal
-The application will be running on `http://localhost:5173`. You can start exploring the features through the landing page by navigating to the role-based login interfaces.
->>>>>>> 9132c72ceabb071b91fbf0d0be81d2893f1a44f2
+---

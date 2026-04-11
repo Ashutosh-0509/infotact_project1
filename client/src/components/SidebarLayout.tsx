@@ -1,5 +1,5 @@
 import { useState, ReactNode } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Menu, 
@@ -49,6 +49,15 @@ const SidebarLayout = ({ children, navItems, role, activeTab, onTabChange }: Sid
   const [profileModalTab, setProfileModalTab] = useState<"profile" | "settings">("profile");
   const { user, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('user');
+    navigate('/');
+  };
 
   return (
     <RoleBasedTheme role={role}>
@@ -109,7 +118,7 @@ const SidebarLayout = ({ children, navItems, role, activeTab, onTabChange }: Sid
             <Button 
               variant="ghost" 
               className="w-full justify-start gap-3 rounded-xl hover:bg-destructive/10 hover:text-destructive group"
-              onClick={logout}
+              onClick={handleLogout}
             >
               <LogOut className="w-5 h-5" />
               {isSidebarExpanded && <span className="font-bold">Logout</span>}
@@ -183,7 +192,7 @@ const SidebarLayout = ({ children, navItems, role, activeTab, onTabChange }: Sid
                     <SettingsIcon className="w-4 h-4" /> Settings
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-destructive gap-2" onClick={logout}>
+                  <DropdownMenuItem className="text-destructive gap-2" onClick={handleLogout}>
                     <LogOut className="w-4 h-4" /> Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>

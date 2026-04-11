@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BarChart, EyeOff, Eye, ArrowLeft, Loader2, AlertCircle } from 'lucide-react';
@@ -8,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useAuth } from '@/hooks/useAuth';
 import { ROUTE_PATHS } from '@/lib/index';
+import { toast } from 'sonner';
 
 const springPreset = {
   type: 'spring',
@@ -28,29 +30,60 @@ export default function ManagerLogin() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const mockLogin = (email: string, password: string) => {
+    const users: Record<string, any> = {
+      'cashier@pos.com': {
+        password: 'cashier123',
+        role: 'cashier',
+        name: 'Cashier User',
+        token: 'mock-cashier-token-123'
+      },
+      'manager@pos.com': {
+        password: 'manager123', 
+        role: 'manager',
+        name: 'Manager User',
+        token: 'mock-manager-token-456'
+      },
+      'admin@pos.com': {
+        password: 'admin123',
+        role: 'admin', 
+        name: 'Admin User',
+        token: 'mock-admin-token-789'
+      }
+    }
+    
+    const user = users[email]
+    if (!user || user.password !== password) {
+      throw new Error('Invalid email or password')
+    }
+    
+    localStorage.setItem('token', user.token)
+    localStorage.setItem('role', user.role)
+    localStorage.setItem('user', JSON.stringify({
+      name: user.name,
+      email: email,
+      role: user.role
+    }))
+    
+    return user
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setIsLoading(true);
-
-    if (!email || !password) {
-      setError('Please fill in all fields');
-      setIsLoading(false);
-      return;
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    
+    const result = await login({ email, password, role: 'Manager' });
+    
+    if (result.success) {
+      toast.success('Logged in as Manager');
+    } else {
+      setError(result.error || 'Invalid credentials');
     }
-
-    try {
-      const result = await login({ email, password, role: 'Manager' });
-      if (!result.success) {
-        setError(result.error || 'Login failed');
-      }
-    } catch (err) {
-      setError('An unexpected error occurred');
-    } finally {
-      setIsLoading(false);
-    }
+    
+    setLoading(false);
   };
 
   const fillDemo = () => {
@@ -159,11 +192,11 @@ export default function ManagerLogin() {
 
             <Button
               type="submit"
-              disabled={isLoading}
+              disabled={loading}
               className="w-full h-11 text-base font-medium rounded-full hover:opacity-90 transition-opacity"
               style={{ backgroundColor: '#16a34a', color: 'white' }}
             >
-              {isLoading ? (
+              {loading ? (
                 <>
                   <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                   Signing In...

@@ -56,15 +56,15 @@ export default function AIPredictions() {
   };
 
   return (
-    <div className="theme-ai-purple min-h-screen">
+    <div className="theme-neon-blue min-h-screen">
       <Layout>
         <div className="space-y-10 pb-10">
           {/* Header Section */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="space-y-2">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary/20 rounded-xl purple-glow">
-                   <Bot className="w-6 h-6 text-primary purple-text-glow" />
+                <div className="p-2 bg-primary/20 rounded-xl neon-blue-glow">
+                   <Bot className="w-6 h-6 text-primary neon-blue-text-glow" />
                 </div>
                 <h1 className="text-4xl font-black tracking-tighter uppercase italic">PREDICTIVE INTELLIGENCE</h1>
               </div>
@@ -91,10 +91,10 @@ export default function AIPredictions() {
             </div>
             <div className="relative z-10 flex flex-col lg:flex-row items-center gap-12">
                <div className="lg:w-1/2 space-y-6">
-                  <Badge className="bg-primary text-white font-black px-4 py-1 text-xs rounded-full purple-glow">CORE AI ACTIVE</Badge>
+                  <Badge className="bg-primary text-white font-black px-4 py-1 text-xs rounded-full neon-blue-glow">CORE AI ACTIVE</Badge>
                   <h2 className="text-5xl font-black leading-[0.9] tracking-tighter uppercase italic">
                     The Future of <br /> 
-                    <span className="text-primary purple-text-glow">Your Business</span> <br />
+                    <span className="text-primary neon-blue-text-glow">Your Business</span> <br />
                     Is Calculated.
                   </h2>
                   <p className="text-lg text-muted-foreground font-medium max-w-md leading-relaxed">
@@ -117,7 +117,7 @@ export default function AIPredictions() {
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={PREDICTION_DATA}>
                       <defs>
-                        <linearGradient id="purpleGradient" x1="0" y1="0" x2="0" y2="1">
+                        <linearGradient id="neonBlueGradient" x1="0" y1="0" x2="0" y2="1">
                           <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3}/>
                           <stop offset="95%" stopColor="var(--primary)" stopOpacity={0}/>
                         </linearGradient>
@@ -129,7 +129,7 @@ export default function AIPredictions() {
                          contentStyle={{ backgroundColor: 'rgba(0,0,0,0.9)', border: '1px solid var(--primary)', borderRadius: '16px' }}
                          itemStyle={{ color: 'var(--primary)', fontWeight: 'black' }}
                       />
-                      <Area type="monotone" dataKey="revenue" stroke="var(--primary)" fillOpacity={1} fill="url(#purpleGradient)" strokeWidth={4} />
+                      <Area type="monotone" dataKey="revenue" stroke="var(--primary)" fillOpacity={1} fill="url(#neonBlueGradient)" strokeWidth={4} />
                     </AreaChart>
                   </ResponsiveContainer>
                </div>
@@ -170,7 +170,7 @@ export default function AIPredictions() {
 
             {/* Smart Suggestions */}
             <div className="space-y-8">
-               <Card className="bg-primary hover:bg-primary/95 transition-all text-primary-foreground border-none rounded-[2.5rem] overflow-hidden purple-glow cursor-pointer">
+               <Card className="bg-primary hover:bg-primary/95 transition-all text-primary-foreground border-none rounded-[2.5rem] overflow-hidden neon-blue-glow cursor-pointer">
                   <CardContent className="p-8">
                      <div className="flex justify-between items-start mb-6">
                         <div className="p-3 bg-white/20 rounded-2xl"><Zap className="w-8 h-8 fill-white" /></div>

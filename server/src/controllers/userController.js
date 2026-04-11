@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
+
 
 // @desc    Get all users
 // @route   GET /api/users
@@ -17,7 +19,7 @@ exports.getUsers = async (req, res) => {
 // @access  Public
 exports.createUser = async (req, res) => {
   try {
-    const { name, email } = req.body;
+    const { name, email, password, role } = req.body;
     
     // Check if user already exists
     const userExists = await User.findOne({ email });
@@ -25,7 +27,21 @@ exports.createUser = async (req, res) => {
       return res.status(400).json({ success: false, message: 'User already exists' });
     }
 
-    const user = await User.create({ name, email });
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash(password, salt);
+
+    // Generate avatar seed from name
+    const avatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=${name.split(' ').join('')}`;
+
+    const user = await User.create({ 
+      name, 
+      email, 
+      passwordHash, 
+      role: role || 'Cashier',
+      avatar
+    });
+
     res.status(201).json({ success: true, data: user });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -52,7 +68,16 @@ exports.getUserById = async (req, res) => {
 // @access  Public
 exports.updateUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    const { name, email, password, role } = req.body;
+    let updateData = { name, email, role };
+
+    // If password is provided, hash it
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      updateData.passwordHash = await bcrypt.hash(password, salt);
+    }
+
+    const user = await User.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
       runValidators: true
     });

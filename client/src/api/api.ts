@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://infotact-project1-2.onrender.com/api',
+  baseURL: (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000') + '/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -20,9 +20,14 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Only clear storage and redirect if it's a 401 and NOT on a login page
+    // This prevents clearing state during login attempts
     if (error.response?.status === 401) {
-      localStorage.clear();
-      window.location.href = '/';
+      const isLoginPage = window.location.pathname.includes('/login');
+      if (!isLoginPage) {
+        localStorage.clear();
+        window.location.href = '/';
+      }
     }
     return Promise.reject(error);
   }

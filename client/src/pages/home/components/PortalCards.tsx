@@ -15,7 +15,7 @@ export const PortalCards = () => {
       color: 'bg-blue-500/10',
       hoverGlow: 'hover:shadow-[0_0_40px_-10px_rgba(59,130,246,0.3)]',
       borderGlow: 'group-hover:border-blue-400/50',
-      loginPath: ROUTE_PATHS.LOGIN_CASHIER,
+      loginPath: '/login/cashier',
     },
     {
       title: 'Manager Portal',
@@ -24,7 +24,7 @@ export const PortalCards = () => {
       color: 'bg-indigo-500/10',
       hoverGlow: 'hover:shadow-[0_0_40px_-10px_rgba(79,70,229,0.3)]',
       borderGlow: 'group-hover:border-indigo-400/50',
-      loginPath: ROUTE_PATHS.LOGIN_MANAGER,
+      loginPath: '/login/manager',
     },
     {
       title: 'Administration',
@@ -33,7 +33,7 @@ export const PortalCards = () => {
       color: 'bg-purple-500/10',
       hoverGlow: 'hover:shadow-[0_0_40px_-10px_rgba(168,85,247,0.3)]',
       borderGlow: 'group-hover:border-purple-400/50',
-      loginPath: ROUTE_PATHS.LOGIN_ADMIN,
+      loginPath: '/login/admin',
     }
   ];
 

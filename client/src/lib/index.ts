@@ -14,6 +14,7 @@ export const ROUTE_PATHS = {
   DASHBOARD_POS: '/dashboard/pos',
   DASHBOARD_MANAGER: '/dashboard/manager',
   DASHBOARD_ADMIN: '/dashboard/admin',
+  DASHBOARD_USERS: '/dashboard/users',
   PRODUCTS: '/products',
   INVENTORY: '/inventory',
   POS: '/pos',

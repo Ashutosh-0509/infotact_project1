@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import { RoleBasedTheme } from "@/components/RoleBasedTheme";
 import { 
   Search, 
@@ -52,6 +53,15 @@ interface CartItem {
 
 const CashierDashboard = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  
+  const handleLogout = () => {
+    logout();
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('user');
+    navigate('/');
+  };
   const [currentTime, setCurrentTime] = useState(new Date());
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
@@ -177,7 +187,7 @@ const CashierDashboard = () => {
               <Button variant="ghost" size="icon" onClick={() => { setProfileModalTab("profile"); setIsProfileModalOpen(true); }} className="hover:text-primary">
                 <Settings className="w-5 h-5" />
               </Button>
-              <Button variant="ghost" size="icon" onClick={logout} className="hover:text-destructive">
+              <Button variant="ghost" size="icon" onClick={handleLogout} className="hover:text-destructive">
                 <LogOut className="w-5 h-5" />
               </Button>
             </div>

@@ -50,15 +50,24 @@ interface NavItem {
   badge?: number;
 }
 
-const navItems: NavItem[] = [
-  { path: ROUTE_PATHS.DASHBOARD, label: 'Dashboard', icon: LayoutDashboard },
-  { path: ROUTE_PATHS.DASHBOARD_SALES, label: 'Sales', icon: ShoppingBag },
-  { path: ROUTE_PATHS.DASHBOARD_INVENTORY, label: 'Inventory', icon: Warehouse },
-  { path: ROUTE_PATHS.DASHBOARD_CUSTOMERS, label: 'Customers', icon: Users },
-  { path: ROUTE_PATHS.DASHBOARD_REPORTS, label: 'Reports', icon: BarChart3 },
-  { path: ROUTE_PATHS.AI_PREDICTIONS, label: 'AI Predictions', icon: Bot },
-  { path: ROUTE_PATHS.DASHBOARD_SETTINGS, label: 'Settings', icon: Settings },
-];
+const getNavItems = (role?: string): NavItem[] => {
+  const baseItems: NavItem[] = [
+    { path: ROUTE_PATHS.DASHBOARD, label: 'Dashboard', icon: LayoutDashboard },
+    { path: ROUTE_PATHS.DASHBOARD_SALES, label: 'Sales', icon: ShoppingBag },
+    { path: ROUTE_PATHS.DASHBOARD_INVENTORY, label: 'Inventory', icon: Warehouse },
+    { path: ROUTE_PATHS.DASHBOARD_CUSTOMERS, label: 'Customers', icon: Users },
+    { path: ROUTE_PATHS.DASHBOARD_REPORTS, label: 'Reports', icon: BarChart3 },
+    { path: ROUTE_PATHS.AI_PREDICTIONS, label: 'AI Predictions', icon: Bot },
+  ];
+
+  if (role === 'admin') {
+    baseItems.push({ path: ROUTE_PATHS.DASHBOARD_USERS, label: 'Users & Roles', icon: UserCog });
+  }
+
+  baseItems.push({ path: ROUTE_PATHS.DASHBOARD_SETTINGS, label: 'Settings', icon: Settings });
+
+  return baseItems;
+};
 
 const sidebarVariants = {
   expanded: { width: 280 },
@@ -85,7 +94,9 @@ export default function Layout({ children }: LayoutProps) {
 
   const handleLogout = () => {
     logout();
-    localStorage.clear();
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('user');
     toast.success('Logged out successfully', {
       className: 'bg-background border-primary/50 text-foreground',
     });
@@ -143,7 +154,7 @@ export default function Layout({ children }: LayoutProps) {
 
           <nav className="flex-1 overflow-y-auto py-6 px-3">
             <ul className="space-y-2">
-              {navItems.map((item) => {
+              {getNavItems(user?.role?.toLowerCase()).map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
 

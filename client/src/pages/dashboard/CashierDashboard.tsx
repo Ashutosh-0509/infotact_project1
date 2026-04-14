@@ -74,6 +74,12 @@ const CashierDashboard = () => {
   const [paymentMethod, setPaymentMethod] = useState("CASH");
   const [amountReceived, setAmountReceived] = useState("");
   const [orderNumber] = useState(`ORD-${Math.floor(1000 + Math.random() * 9000)}`);
+  const [lastOrder, setLastOrder] = useState<{
+    items: CartItem[];
+    subtotal: number;
+    gst: number;
+    total: number;
+  } | null>(null);
   
   // Helpers for category styling
   const getCategoryIcon = (category: string) => {
@@ -151,6 +157,12 @@ const CashierDashboard = () => {
   };
 
   const confirmPayment = () => {
+    setLastOrder({
+      items: [...cart],
+      subtotal,
+      gst,
+      total
+    });
     setIsCheckoutOpen(false);
     setIsReceiptOpen(true);
     setCart([]);
@@ -544,35 +556,29 @@ const CashierDashboard = () => {
                      <span>PRICE</span>
                    </div>
                  </div>
-                 {/* Fake items used since we empty cart on success */}
-                 <div className="flex justify-between text-[10px]">
-                   <span className="truncate max-w-[150px]">Amul Butter 500g</span>
-                   <div className="flex gap-10">
-                     <span>2</span>
-                     <span>₹570.00</span>
+                 {lastOrder?.items.map(item => (
+                   <div key={item.id} className="flex justify-between text-[10px]">
+                     <span className="truncate max-w-[150px]">{item.name}</span>
+                     <div className="flex gap-10">
+                       <span>{item.quantity}</span>
+                       <span>₹{(item.price * item.quantity).toFixed(2)}</span>
+                     </div>
                    </div>
-                 </div>
-                 <div className="flex justify-between text-[10px]">
-                   <span className="truncate max-w-[150px]">Parle-G 800g</span>
-                   <div className="flex gap-10">
-                     <span>1</span>
-                     <span>₹45.00</span>
-                   </div>
-                 </div>
+                 ))}
                </div>
 
                <div className="border-t border-dashed pt-2 space-y-1 text-[10px] font-bold">
                  <div className="flex justify-between">
                    <span>Subtotal</span>
-                   <span>₹615.00</span>
+                   <span>₹{lastOrder?.subtotal.toFixed(2) || '0.00'}</span>
                  </div>
                  <div className="flex justify-between">
                    <span>GST (18%)</span>
-                   <span>₹110.70</span>
+                   <span>₹{lastOrder?.gst.toFixed(2) || '0.00'}</span>
                  </div>
                  <div className="flex justify-between text-base font-black pt-2 border-t border-double mt-2">
                    <span>TOTAL</span>
-                   <span>₹725.70</span>
+                   <span>₹{lastOrder?.total.toFixed(2) || '0.00'}</span>
                  </div>
                </div>
 

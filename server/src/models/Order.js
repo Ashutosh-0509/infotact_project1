@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const orderItemSchema = new mongoose.Schema({
-  productId: { type: String, required: true },
+  productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
   productName: { type: String, required: true },
   sku: { type: String },
   quantity: { type: Number, required: true },
@@ -21,7 +21,7 @@ const orderSchema = new mongoose.Schema({
   paymentMethod: { type: String, enum: ['cash', 'card', 'digital', 'split'], default: 'cash' },
   status: { type: String, enum: ['pending', 'processing', 'completed', 'cancelled', 'refunded'], default: 'completed' },
   notes: { type: String },
-  createdBy: { type: String, required: true }
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
 }, {
   timestamps: true,
   toJSON: { virtuals: true },

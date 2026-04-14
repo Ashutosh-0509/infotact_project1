@@ -1,10 +1,72 @@
 const Product = require('../models/Product');
+const Redis = require('ioredis');
 
-// Get all products
+// Setup Redis instance (gracefully fail if Redis is down for local dev)
+const redis = new Redis(process.env.REDIS_URL || 'redis://127.0.0.1:6379', {
+  lazyConnect: true,
+  maxRetriesPerRequest: 1
+});
+redis.on('error', (err) => console.warn('Redis connection warned:', err.message));
+
+// Helper: Clear product cache
+const clearCache = async () => {
+  try {
+    const keys = await redis.keys('products:*');
+    if (keys.length > 0) {
+      await redis.del(keys);
+    }
+  } catch (error) {
+    // Ignore if redis is unavailable
+  }
+};
+
+// Get all products (with Cursor pagination, Text search, Redis cache)
 exports.getProducts = async (req, res) => {
   try {
-    const products = await Product.find({ isActive: true }).sort({ createdAt: -1 });
-    res.json(products);
+    const { cursor, limit, q } = req.query;
+    const fetchLimit = parseInt(limit) || 50;
+    
+    // Construct unique cache key
+    const cacheKey = `products:${cursor || '0'}:${fetchLimit}:${q || ''}`;
+    
+    // Attempt Redis fetch
+    try {
+      const cached = await redis.get(cacheKey);
+      if (cached) {
+        return res.json(JSON.parse(cached));
+      }
+    } catch (cacheErr) {
+       // Redis failed/offline, proceed to Mongo natively
+    }
+
+    let query = { isActive: true };
+    
+    // Full-Text Search integration (Week 2 req)
+    if (q) {
+      query.$text = { $search: q };
+    }
+    
+    // Cursor pagination (assuming cursor is ID)
+    if (cursor) {
+      query._id = { $gt: cursor };
+    }
+
+    const products = await Product.find(query)
+      .sort({ _id: 1 }) // Crucial for cursor pagination
+      .limit(fetchLimit);
+
+    const nextCursor = products.length === fetchLimit ? products[products.length - 1]._id : null;
+    
+    const responseData = { products, nextCursor };
+
+    // Set Cache for 10 minutes
+    try {
+      if (redis.status === 'ready') {
+         await redis.set(cacheKey, JSON.stringify(responseData), 'EX', 600);
+      }
+    } catch (e) {}
+
+    res.json(responseData);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching products', error: error.message });
   }
@@ -15,6 +77,8 @@ exports.createProduct = async (req, res) => {
   try {
     const product = new Product(req.body);
     const savedProduct = await product.save();
+    
+    await clearCache(); // Invalidate Cache
     
     // Add id field for frontend compatibility
     const productObj = savedProduct.toObject();

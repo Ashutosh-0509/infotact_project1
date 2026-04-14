@@ -5,13 +5,37 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const supplierRoutes = require('./routes/supplierRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 const connectDB = require('./config/db');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 // Connect to MongoDB
 connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// ── Swagger Configuration ──────────────────────────────────────────
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'RetailPro API',
+      version: '1.0.0',
+      description: 'API documentation for RetailPro POS system',
+    },
+    servers: [{ url: `http://localhost:${PORT}` }],
+    components: {
+      securitySchemes: {
+        bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }
+      }
+    },
+    security: [{ bearerAuth: [] }]
+  },
+  apis: ['./src/routes/*.js', './src/controllers/*.js'],
+};
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 // ── Middleware ──────────────────────────────────────────────
 app.use(cors({
@@ -24,10 +48,12 @@ app.use(cors({
 app.use(express.json());
 
 // ── Routes ──────────────────────────────────────────────────
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/suppliers', supplierRoutes);
+app.use('/api/orders', orderRoutes);
 
 // Health-check
 app.get('/api/health', (_req, res) => {

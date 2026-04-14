@@ -183,20 +183,60 @@ export default function AIPredictions() {
 
   const festivals = getRelevantFestivals();
 
+  // Build a smart fallback using real upcoming festival data
+  const buildFallback = (): string => {
+    const next = ALL_FESTIVALS
+      .map(f => ({ ...f, days: getDaysLeft(f.date) }))
+      .filter(f => f.days >= 0 && f.days <= 60)
+      .sort((a, b) => a.days - b.days);
+
+    if (next.length === 0)
+      return 'No major festivals in the next 60 days. Focus on everyday essentials and fast-moving consumer goods to maintain steady inventory turnover.';
+
+    const soonest = next[0];
+    const productMap: Record<string, string> = {
+      'Eid ul-Fitr':          'sheer khurma ingredients (vermicelli, condensed milk, dry fruits), new garments, and gift hampers',
+      'Eid ul-Adha':          'mutton, beef cuts, dry fruits, biryani ingredients, and disposable cookware',
+      'Ram Navami':           'puja items, flowers, panchamrit ingredients (milk, honey, curd), and sweets',
+      'Dr. Ambedkar Jayanti': 'fresh flowers, garlands, and general FMCG items for community events',
+      'Buddha Purnima':       'incense sticks, diyas, white fabric, and herbal teas',
+      'Muharram':             'dates, black and green fabric, and general grocery staples',
+      'Raksha Bandhan':       'rakhis, sweets (mithai boxes), gifting chocolates, and dry fruits',
+      'Independence Day':     'tricolor ribbons, flags, packaged snacks, and cold beverages',
+      'Janmashtami':          'milk, curd, butter, puja items, and dry fruits for prasad',
+      'Ganesh Chaturthi':     'modak mix, fresh flowers, puja items, eco-friendly idols, and sweets',
+      'Navratri':             'fasting foods (rajgira atta, sabudana, sendha namak), fruits, and garba accessories',
+      'Dussehra':             'sweets, new clothing, toys, and packaged gifts',
+      'Diwali':               'diyas, candles, dry fruits, mithai, gift hampers, and cleaning supplies',
+      'Bhai Dooj':            'sweets, gifting boxes, and personal care products',
+      'Guru Nanak Jayanti':   'karah prasad ingredients (wheat flour, ghee, sugar), puja items, and langar staples',
+      'Christmas':            'cakes, plum cake, ice cream, chocolates, greeting cards, and decorations',
+    };
+    const products = productMap[soonest.name] ?? 'festive snacks, gift items, and packaged sweets';
+    return `${soonest.name} is ${soonest.days} day${soonest.days === 1 ? '' : 's'} away — stock up on ${products} to capture peak festival demand and avoid last-minute shortages.`;
+  };
+
   useEffect(() => {
     const load = async () => {
       setInsightLoading(true);
       setInsightError(false);
       try {
+        // Build festival list for the prompt
+        const upcomingList = ALL_FESTIVALS
+          .map(f => ({ ...f, days: getDaysLeft(f.date) }))
+          .filter(f => f.days >= 0 && f.days <= 60)
+          .sort((a, b) => a.days - b.days)
+          .map(f => `${f.name} (in ${f.days} days)`)
+          .join(', ');
+
         const today = new Date().toLocaleDateString('en-IN');
-        const prompt = `Today is ${today}. Looking at the next 30 days of Indian festivals and seasonal trends, give ONE short actionable stock recommendation for a retail store. Maximum 2 sentences. No emojis. Focus on specific products to stock.`;
+        const prompt = `Today is ${today}. The following Indian festivals are coming up soon: ${upcomingList}. You are an advisor for a small Indian retail store. Give ONE specific, actionable stock recommendation tied to the nearest festival. Mention the festival name and exactly which products to stock or promote. Maximum 2 sentences. No emojis.`;
+
         const result = await askGrok(prompt);
         setAiInsight(result);
       } catch {
         setInsightError(true);
-        setAiInsight(
-          'With the upcoming festival season, consider increasing stock of gift items, sweets, and premium packaged foods to meet elevated consumer demand in the next 30 days.'
-        );
+        setAiInsight(buildFallback());
       } finally {
         setInsightLoading(false);
       }

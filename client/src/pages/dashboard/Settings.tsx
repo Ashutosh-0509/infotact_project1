@@ -159,62 +159,63 @@ export default function Settings() {
           <div className="flex items-center justify-between">
             <h1 className="text-4xl font-black tracking-tighter text-foreground uppercase border-l-4 border-primary pl-4">SETTINGS</h1>
           </div>
+        </div>
+        <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
+          <div className="space-y-2">
+            {tabs.map((tab) => (
+              <Button
+                key={tab.id}
+                variant={activeTab === tab.id ? 'secondary' : 'ghost'}
+                onClick={() => setActiveTab(tab.id)}
+                className={`w-full justify-start gap-4 rounded-2xl h-14 font-bold tracking-tight transition-all relative ${activeTab === tab.id ? 'bg-primary/20 text-primary border border-primary/30 shadow-[0_0_15px_rgba(var(--primary),0.2)]' : 'text-muted-foreground hover:bg-white/5 hover:text-foreground'
+                  }`}
+              >
+                <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? 'text-primary' : 'opacity-40'}`} />
+                {tab.id.toUpperCase()}
+                {activeTab === tab.id && (
+                  <motion.div layoutId="settingActive" className="absolute right-4 w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_8px_var(--primary)]" />
+                )}
+              </Button>
+            ))}
+          </div>
 
-          <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
-            <div className="space-y-2">
-              {tabs.map((tab) => (
-                <Button
-                  key={tab.id}
-                  variant={activeTab === tab.id ? 'secondary' : 'ghost'}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`w-full justify-start gap-4 rounded-2xl h-14 font-bold tracking-tight transition-all relative ${activeTab === tab.id ? 'bg-primary/20 text-primary border border-primary/30 shadow-[0_0_15px_rgba(var(--primary),0.2)]' : 'text-muted-foreground hover:bg-white/5 hover:text-foreground'
-                    }`}
-                >
-                  <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? 'text-primary' : 'opacity-40'}`} />
-                  {tab.id.toUpperCase()}
-                  {activeTab === tab.id && (
-                    <motion.div layoutId="settingActive" className="absolute right-4 w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_8px_var(--primary)]" />
-                  )}
-                </Button>
-              ))}
+          <div className="bg-card/30 backdrop-blur-3xl border border-primary/10 rounded-[3rem] p-10 flex flex-col min-h-[600px]">
+            <div className="flex-1">
+              <div className="mb-10 flex items-center gap-4">
+                <div className="p-3 bg-primary/20 rounded-2xl">
+                  {tabs.find(t => t.id === activeTab)?.icon && React.createElement(tabs.find(t => t.id === activeTab).icon, { className: "w-6 h-6 text-primary" })}
+                </div>
+                <div>
+                  <h2 className="text-2xl font-black uppercase tracking-tight">{activeTab}</h2>
+                  <p className="text-xs text-muted-foreground uppercase tracking-widest opacity-60">Manage your store's {activeTab.toLowerCase()} preferences</p>
+                </div>
+              </div>
+
+              <AnimatePresence mode="wait">
+                {renderTabContent()}
+              </AnimatePresence>
             </div>
 
-            <div className="bg-card/30 backdrop-blur-3xl border border-primary/10 rounded-[3rem] p-10 flex flex-col min-h-[600px]">
-              <div className="flex-1">
-                <div className="mb-10 flex items-center gap-4">
-                  <div className="p-3 bg-primary/20 rounded-2xl">
-                    {tabs.find(t => t.id === activeTab)?.icon && React.createElement(tabs.find(t => t.id === activeTab).icon, { className: "w-6 h-6 text-primary" })}
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-black uppercase tracking-tight">{activeTab}</h2>
-                    <p className="text-xs text-muted-foreground uppercase tracking-widest opacity-60">Manage your store's {activeTab.toLowerCase()} preferences</p>
-                  </div>
-                </div>
-
-                <AnimatePresence mode="wait">
-                  {renderTabContent()}
-                </AnimatePresence>
-              </div>
-
-              <div className="mt-12 pt-8 border-t border-primary/10 flex justify-end gap-4">
-                <Button variant="ghost" className="rounded-xl px-8 uppercase font-bold tracking-widest text-xs opacity-60">Discard</Button>
-                <Button
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl px-10 h-14 font-black shadow-[0_0_20px_rgba(var(--primary),0.3)] gap-2"
-                  onClick={handleSave}
-                  disabled={isSaving}
-                >
-                  {isSaving ? (
-                    <div className="w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    <Save className="w-5 h-5" />
-                  )}
-                  {isSaving ? 'SAVING...' : 'SAVE CHANGES'}
-                </Button>
-              </div>
+            <div className="mt-12 pt-8 border-t border-primary/10 flex justify-end gap-4">
+              <Button variant="ghost" className="rounded-xl px-8 uppercase font-bold tracking-widest text-xs opacity-60">Discard</Button>
+              <Button
+                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl px-10 h-14 font-black shadow-[0_0_20px_rgba(var(--primary),0.3)] gap-2"
+                onClick={handleSave}
+                disabled={isSaving}
+              >
+                {isSaving ? (
+                  <div className="w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <Save className="w-5 h-5" />
+                )}
+                {isSaving ? 'SAVING...' : 'SAVE CHANGES'}
+              </Button>
             </div>
           </div>
+        </div>
       </Layout>
     </div>
   );
 }
+
 import React from 'react';

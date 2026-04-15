@@ -9,9 +9,13 @@ const orderRoutes = require('./routes/orderRoutes');
 const connectDB = require('./config/db');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const { scheduleForecaster } = require('./data/inventoryForecaster');
 
 // Connect to MongoDB
 connectDB();
+
+// Initialize nightly forecasting CRON
+scheduleForecaster();
 
 const app = express();
 const PORT = process.env.PORT || 5000;

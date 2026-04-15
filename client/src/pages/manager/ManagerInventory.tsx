@@ -34,7 +34,8 @@ export const ManagerInventory = () => {
     try {
       setLoading(true);
       const { data } = await api.get('/products');
-      setProducts(data);
+      // The backend returns { products: [...], nextCursor: ... } for pagination support
+      setProducts(data.products || []);
     } catch (error) {
       toast.error("Failed to load inventory");
     } finally {

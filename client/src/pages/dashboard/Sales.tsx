@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Layout from '@/components/Layout';
 import { motion } from 'framer-motion';
 import { 
   TrendingUp, 
@@ -35,7 +36,9 @@ export default function Sales() {
   ];
 
   return (
-    <div className="space-y-8 pb-10">
+    <div className="theme-neon-blue">
+      <Layout>
+        <div className="space-y-8 pb-10">
       <div className="flex items-center justify-between">
         <h1 className="text-4xl font-black tracking-tighter text-foreground uppercase border-l-4 border-primary pl-4">SALES</h1>
         <div className="flex gap-2 bg-card/50 p-1 rounded-xl border border-primary/10">
@@ -147,7 +150,8 @@ export default function Sales() {
             <Button variant="outline" size="icon" className="rounded-xl border-primary/10 hover:bg-primary/5"><ChevronRight className="w-4 h-4" /></Button>
           </div>
         </div>
-      </div>
+        </div>
+      </Layout>
     </div>
   );
 }

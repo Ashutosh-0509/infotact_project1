@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Layout from '@/components/Layout';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Package, 
@@ -87,7 +88,9 @@ export default function Inventory() {
   };
 
   return (
-    <div className="space-y-8 pb-10">
+    <div className="theme-neon-blue">
+      <Layout>
+        <div className="space-y-8 pb-10">
       <div className="flex items-center justify-between">
         <h1 className="text-4xl font-black tracking-tighter text-foreground uppercase border-l-4 border-primary pl-4">INVENTORY</h1>
         <Button 
@@ -269,7 +272,8 @@ export default function Inventory() {
             </Button>
           </DialogFooter>
         </DialogContent>
-      </Dialog>
+        </div>
+      </Layout>
     </div>
   );
 }

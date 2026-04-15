@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Layout from '@/components/Layout';
 import { motion } from 'framer-motion';
 import { 
   BarChart3, 
@@ -45,7 +46,9 @@ export default function Reports() {
   ];
 
   return (
-    <div className="space-y-8 pb-10">
+    <div className="theme-neon-blue">
+      <Layout>
+        <div className="space-y-8 pb-10">
       <div className="flex items-center justify-between">
         <h1 className="text-4xl font-black tracking-tighter text-foreground uppercase border-l-4 border-primary pl-4">REPORTS</h1>
         <div className="flex gap-3">
@@ -193,7 +196,9 @@ export default function Reports() {
             </Button>
           </div>
         </motion.div>
-      </div>
+        </div>
+        </div>
+      </Layout>
     </div>
   );
 }

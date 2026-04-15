@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const orderItemSchema = new mongoose.Schema({
   productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
   productName: { type: String, required: true },
+  variantId: { type: mongoose.Schema.Types.ObjectId }, // Support for specific variant
+  variantDesc: { type: String }, // e.g. "Red - Large"
   sku: { type: String },
   quantity: { type: Number, required: true },
   price: { type: Number, required: true },

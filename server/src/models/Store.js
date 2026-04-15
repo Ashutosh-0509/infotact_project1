@@ -9,7 +9,15 @@ const storeSchema = new mongoose.Schema({
   operatingHours: {
     open: { type: String },
     close: { type: String }
+  },
+  // Phase 3: GeoJSON coordinates [longitude, latitude]
+  location: {
+    type: { type: String, enum: ['Point'], default: 'Point' },
+    coordinates: { type: [Number], required: true } // [lng, lat]
   }
 }, { timestamps: true });
+
+// Crucial: 2dsphere index for geospatial $geoNear algorithms
+storeSchema.index({ location: '2dsphere' });
 
 module.exports = mongoose.model('Store', storeSchema);

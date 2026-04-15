@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import Layout from '@/components/Layout';
 import { motion } from 'framer-motion';
-import { 
-  TrendingUp, 
-  DollarSign, 
-  Calendar, 
+import {
+  TrendingUp,
+  DollarSign,
+  Calendar,
   ShoppingBag,
   Search,
   Filter,
@@ -39,117 +39,115 @@ export default function Sales() {
     <div className="theme-neon-blue">
       <Layout>
         <div className="space-y-8 pb-10">
-      <div className="flex items-center justify-between">
-        <h1 className="text-4xl font-black tracking-tighter text-foreground uppercase border-l-4 border-primary pl-4">SALES</h1>
-        <div className="flex gap-2 bg-card/50 p-1 rounded-xl border border-primary/10">
-          {['Today', 'Week', 'Month', 'Custom'].map((f) => (
-            <Button
-              key={f}
-              variant={filter === f ? 'secondary' : 'ghost'}
-              size="sm"
-              onClick={() => setFilter(f)}
-              className={`rounded-lg px-4 ${filter === f ? 'bg-primary/20 text-primary border border-primary/30 shadow-[0_0_15px_rgba(var(--primary),0.2)]' : 'text-muted-foreground'}`}
+          <div className="flex items-center justify-between">
+            <h1 className="text-4xl font-black tracking-tighter text-foreground uppercase border-l-4 border-primary pl-4">SALES</h1>
+            <div className="flex gap-2 bg-card/50 p-1 rounded-xl border border-primary/10">
+              {['Today', 'Week', 'Month', 'Custom'].map((f) => (
+                <Button
+                  key={f}
+                  variant={filter === f ? 'secondary' : 'ghost'}
+                  size="sm"
+                  onClick={() => setFilter(f)}
+                  className={`rounded-lg px-4 ${filter === f ? 'bg-primary/20 text-primary border border-primary/30 shadow-[0_0_15px_rgba(var(--primary),0.2)]' : 'text-muted-foreground'}`}
+                >
+                  {f}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {stats.map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="p-6 rounded-[2rem] bg-card/40 backdrop-blur-xl border border-primary/10 hover:border-primary/30 transition-all group"
             >
-              {f}
-            </Button>
+              <div className="flex items-center justify-between mb-4">
+                <div className={`p-3 rounded-2xl bg-black/20 border border-primary/20 group-hover:shadow-[0_0_20px_rgba(var(--primary),0.2)] transition-all`}>
+                  <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                </div>
+                <Badge variant="outline" className="border-primary/20 text-primary bg-primary/5">{stat.trend}</Badge>
+              </div>
+              <p className="text-muted-foreground text-xs uppercase tracking-widest font-bold">{stat.title}</p>
+              <h3 className="text-3xl font-black mt-1 tracking-tight">{stat.value}</h3>
+            </motion.div>
           ))}
         </div>
-      </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            className="p-6 rounded-[2rem] bg-card/40 backdrop-blur-xl border border-primary/10 hover:border-primary/30 transition-all group"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div className={`p-3 rounded-2xl bg-black/20 border border-primary/20 group-hover:shadow-[0_0_20px_rgba(var(--primary),0.2)] transition-all`}>
-                <stat.icon className={`w-6 h-6 ${stat.color}`} />
-              </div>
-              <Badge variant="outline" className="border-primary/20 text-primary bg-primary/5">{stat.trend}</Badge>
+        <div className="bg-card/30 backdrop-blur-xl border border-primary/10 rounded-[2.5rem] overflow-hidden">
+          <div className="p-8 border-b border-primary/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="relative group flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+              <Input
+                placeholder="Search by Trans ID or customer..."
+                className="pl-10 bg-black/20 border-primary/10 focus:border-primary/40 rounded-xl"
+              />
             </div>
-            <p className="text-muted-foreground text-xs uppercase tracking-widest font-bold">{stat.title}</p>
-            <h3 className="text-3xl font-black mt-1 tracking-tight">{stat.value}</h3>
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="bg-card/30 backdrop-blur-xl border border-primary/10 rounded-[2.5rem] overflow-hidden">
-        <div className="p-8 border-b border-primary/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="relative group flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-            <Input
-              placeholder="Search by Trans ID or customer..."
-              className="pl-10 bg-black/20 border-primary/10 focus:border-primary/40 rounded-xl"
-            />
+            <div className="flex gap-3">
+              <Button variant="outline" className="border-primary/10 hover:bg-primary/5 rounded-xl gap-2">
+                <Filter className="w-4 h-4" /> Filter
+              </Button>
+              <Button variant="outline" className="border-primary/10 hover:bg-primary/5 rounded-xl gap-2">
+                <Download className="w-4 h-4" /> Export
+              </Button>
+            </div>
           </div>
-          <div className="flex gap-3">
-            <Button variant="outline" className="border-primary/10 hover:bg-primary/5 rounded-xl gap-2">
-              <Filter className="w-4 h-4" /> Filter
-            </Button>
-            <Button variant="outline" className="border-primary/10 hover:bg-primary/5 rounded-xl gap-2">
-              <Download className="w-4 h-4" /> Export
-            </Button>
-          </div>
-        </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b border-primary/10">
-                {['Trans ID', 'Customer', 'Items', 'Amount', 'Method', 'Status', 'Date/Time', ''].map((h) => (
-                  <th key={h} className="px-8 py-5 text-[10px] uppercase tracking-[0.2em] font-black text-muted-foreground">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {sales.map((item, i) => (
-                <tr key={i} className="border-b border-primary/5 hover:bg-primary/5 transition-colors group cursor-pointer">
-                  <td className="px-8 py-6 font-mono text-sm text-primary">{item.id}</td>
-                  <td className="px-8 py-6 font-bold">{item.customer}</td>
-                  <td className="px-8 py-6">{item.items}</td>
-                  <td className="px-8 py-6 font-black text-lg">{item.amount}</td>
-                  <td className="px-8 py-6">
-                    <Badge variant="outline" className="rounded-lg border-primary/10">{item.method}</Badge>
-                  </td>
-                  <td className="px-8 py-6">
-                    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold uppercase shadow-sm ${
-                      item.status === 'Completed' ? 'bg-green-500/10 text-green-400 border border-green-500/30' :
-                      item.status === 'Pending' ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/30' :
-                      'bg-red-500/10 text-red-400 border border-red-500/30'
-                    }`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${
-                        item.status === 'Completed' ? 'bg-green-400' :
-                        item.status === 'Pending' ? 'bg-yellow-400' :
-                        'bg-red-400'
-                      }`} />
-                      {item.status}
-                    </div>
-                  </td>
-                  <td className="px-8 py-6 text-sm text-muted-foreground">{item.time}</td>
-                  <td className="px-8 py-6">
-                    <Button variant="ghost" size="icon" className="hover:bg-primary/10 rounded-full">
-                      <MoreVertical className="w-4 h-4" />
-                    </Button>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-primary/10">
+                  {['Trans ID', 'Customer', 'Items', 'Amount', 'Method', 'Status', 'Date/Time', ''].map((h) => (
+                    <th key={h} className="px-8 py-5 text-[10px] uppercase tracking-[0.2em] font-black text-muted-foreground">{h}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="p-6 border-t border-primary/10 flex items-center justify-between">
-          <p className="text-xs text-muted-foreground">Showing 1-5 of 1,240 transactions</p>
-          <div className="flex gap-2">
-            <Button variant="outline" size="icon" className="rounded-xl border-primary/10 hover:bg-primary/5"><ChevronLeft className="w-4 h-4" /></Button>
-            <Button variant="outline" size="icon" className="rounded-xl border-primary/10 hover:bg-primary/5 bg-primary/10 text-primary">1</Button>
-            <Button variant="outline" size="icon" className="rounded-xl border-primary/10 hover:bg-primary/5">2</Button>
-            <Button variant="outline" size="icon" className="rounded-xl border-primary/10 hover:bg-primary/5"><ChevronRight className="w-4 h-4" /></Button>
+              </thead>
+              <tbody>
+                {sales.map((item, i) => (
+                  <tr key={i} className="border-b border-primary/5 hover:bg-primary/5 transition-colors group cursor-pointer">
+                    <td className="px-8 py-6 font-mono text-sm text-primary">{item.id}</td>
+                    <td className="px-8 py-6 font-bold">{item.customer}</td>
+                    <td className="px-8 py-6">{item.items}</td>
+                    <td className="px-8 py-6 font-black text-lg">{item.amount}</td>
+                    <td className="px-8 py-6">
+                      <Badge variant="outline" className="rounded-lg border-primary/10">{item.method}</Badge>
+                    </td>
+                    <td className="px-8 py-6">
+                      <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold uppercase shadow-sm ${item.status === 'Completed' ? 'bg-green-500/10 text-green-400 border border-green-500/30' :
+                          item.status === 'Pending' ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/30' :
+                            'bg-red-500/10 text-red-400 border border-red-500/30'
+                        }`}>
+                        <span className={`w-1.5 h-1.5 rounded-full ${item.status === 'Completed' ? 'bg-green-400' :
+                            item.status === 'Pending' ? 'bg-yellow-400' :
+                              'bg-red-400'
+                          }`} />
+                        {item.status}
+                      </div>
+                    </td>
+                    <td className="px-8 py-6 text-sm text-muted-foreground">{item.time}</td>
+                    <td className="px-8 py-6">
+                      <Button variant="ghost" size="icon" className="hover:bg-primary/10 rounded-full">
+                        <MoreVertical className="w-4 h-4" />
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        </div>
+
+          <div className="p-6 border-t border-primary/10 flex items-center justify-between">
+            <p className="text-xs text-muted-foreground">Showing 1-5 of 1,240 transactions</p>
+            <div className="flex gap-2">
+              <Button variant="outline" size="icon" className="rounded-xl border-primary/10 hover:bg-primary/5"><ChevronLeft className="w-4 h-4" /></Button>
+              <Button variant="outline" size="icon" className="rounded-xl border-primary/10 hover:bg-primary/5 bg-primary/10 text-primary">1</Button>
+              <Button variant="outline" size="icon" className="rounded-xl border-primary/10 hover:bg-primary/5">2</Button>
+              <Button variant="outline" size="icon" className="rounded-xl border-primary/10 hover:bg-primary/5"><ChevronRight className="w-4 h-4" /></Button>
+            </div>
+          </div>
         </div>
       </Layout>
     </div>
